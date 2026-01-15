@@ -1,6 +1,5 @@
-package com.example.watchly.data
+package com.example.watchly.data.remote
 
-import com.example.watchly.data.RetrofitInstance.Client
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

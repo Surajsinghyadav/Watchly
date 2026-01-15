@@ -1,8 +1,8 @@
-package com.example.watchly
+package com.example.watchly.presentation.details
 
 import androidx.lifecycle.ViewModel
-import com.example.watchly.data.Repository
-import com.example.watchly.data.TitleDetailsResponse
+import com.example.watchly.data.model.TitleDetailsResponse
+import com.example.watchly.data.repository.Repository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers

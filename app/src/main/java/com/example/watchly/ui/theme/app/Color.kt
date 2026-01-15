@@ -1,6 +1,5 @@
-package com.example.watchly.ui.theme
+package com.example.watchly.ui.theme.app
 
-import androidx.compose.animation.core.copy
 import androidx.compose.ui.graphics.Color
 
 val Purple80 = Color(0xFFD0BCFF)

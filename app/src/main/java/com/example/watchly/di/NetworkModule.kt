@@ -1,7 +1,8 @@
-package com.example.watchly
+package com.example.watchly.di
 
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.watchly.data.Repository
+import com.example.watchly.presentation.details.DetailsViewModel
+import com.example.watchly.presentation.home.HomeViewModel
+import com.example.watchly.data.repository.Repository
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 

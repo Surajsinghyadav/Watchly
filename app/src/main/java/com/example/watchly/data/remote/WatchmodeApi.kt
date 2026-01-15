@@ -1,7 +1,8 @@
-package com.example.watchly.data
+package com.example.watchly.data.remote
 
+import com.example.watchly.data.model.DataModule
+import com.example.watchly.data.model.TitleDetailsResponse
 import io.reactivex.rxjava3.core.Single
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Path

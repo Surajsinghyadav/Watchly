@@ -1,4 +1,4 @@
-package com.example.watchly
+package com.example.watchly.presentation.home
 
 import android.widget.Toast
 import androidx.compose.foundation.*
@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -16,14 +15,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
-import com.example.watchly.data.Title
+import com.example.watchly.presentation.shimmer.HomeDataShimmer
+import com.example.watchly.data.model.Title
 
 @Composable
 fun DiscoverHomeScreen(
@@ -35,12 +33,17 @@ fun DiscoverHomeScreen(
     val tvShows by viewModel.tvshows.collectAsState()
     val isLoading by viewModel.loading.collectAsState()
     val error by viewModel.error.collectAsState()
-
     val discoverItems = movies + tvShows
-
     var selectedTab by remember { mutableStateOf(0) }
     val tabs = listOf("All","Movies", "TV Shows")
+    val context = LocalContext.current
 
+
+    LaunchedEffect(error) {
+        error?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     val filteredItems = when(selectedTab){
         0 -> discoverItems
@@ -72,20 +75,20 @@ fun DiscoverHomeScreen(
                 color = Color.Black
             )
 
-            // Profile Picture
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape)
-                    .background(Color.Gray)
-            ) {
-                AsyncImage(
-                    model = "profile_image_url",
-                    contentDescription = "Profile",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
-            }
+//            // Wachly logo
+//            Box(
+//                modifier = Modifier
+//                    .size(48.dp)
+//                    .clip(CircleShape)
+//                    .background(Color.Gray)
+//            ) {
+//                AsyncImage(
+//                    model = "image_url",
+//                    contentDescription = "Profile",
+//                    modifier = Modifier.fillMaxSize(),
+//                    contentScale = ContentScale.Crop
+//                )
+//            }
         }
 
         // Tab Row
@@ -129,11 +132,6 @@ fun DiscoverHomeScreen(
 
             }
         }
-
-        error?.let {
-            Toast.makeText(LocalContext.current, it, Toast.LENGTH_SHORT).show()
-        }
-
 
     }
 }

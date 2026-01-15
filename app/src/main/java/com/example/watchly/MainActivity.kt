@@ -10,11 +10,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import com.example.watchly.ui.theme.WatchlyTheme
+import com.example.watchly.ui.theme.app.WatchlyTheme
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
+import com.example.watchly.presentation.details.DetailsViewModel
+import com.example.watchly.presentation.details.MovieDetailsScreen
+import com.example.watchly.presentation.home.DiscoverHomeScreen
+import com.example.watchly.presentation.home.HomeViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

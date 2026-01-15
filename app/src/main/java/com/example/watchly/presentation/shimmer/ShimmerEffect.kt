@@ -1,4 +1,4 @@
-package com.example.watchly
+package com.example.watchly.presentation.shimmer
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -22,7 +22,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.watchly.ui.theme.shimmerColors
+import com.example.watchly.ui.theme.app.shimmerColors
 
 
 fun Modifier.shimmerEffect(): Modifier = composed {

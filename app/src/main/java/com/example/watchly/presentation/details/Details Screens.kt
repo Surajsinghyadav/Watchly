@@ -1,5 +1,6 @@
-package com.example.watchly
+package com.example.watchly.presentation.details
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,12 +37,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.example.watchly.data.TitleDetailsResponse
+import com.example.watchly.presentation.shimmer.ShimmerDetails
+import com.example.watchly.data.model.TitleDetailsResponse
 
 @Composable
 fun MovieDetailsScreen(
@@ -52,9 +55,19 @@ fun MovieDetailsScreen(
     val details by viewModel.details.collectAsState()
     val isLoading by viewModel.loading.collectAsState()
     val error by viewModel.error.collectAsState()
+    val context = LocalContext.current
+
+
 
     LaunchedEffect(id) {
         viewModel.loadDetails(id)
+    }
+
+    LaunchedEffect(error) {
+        error?.let {
+            Toast.makeText(context, "Error: $it", Toast.LENGTH_LONG).show()
+            navController.popBackStack()
+        }
     }
 
     when {
@@ -69,18 +82,6 @@ fun MovieDetailsScreen(
             )
         }
 
-        error != null -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "Error: $error",
-                    color = Color.Red,
-                    fontSize = 16.sp
-                )
-            }
-        }
     }
 }
 

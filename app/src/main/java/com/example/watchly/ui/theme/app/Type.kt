@@ -1,4 +1,4 @@
-package com.example.watchly.ui.theme
+package com.example.watchly.ui.theme.app
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

@@ -1,8 +1,8 @@
-package com.example.watchly
+package com.example.watchly.presentation.home
 
 import androidx.lifecycle.ViewModel
-import com.example.watchly.data.Repository
-import com.example.watchly.data.Title
+import com.example.watchly.data.model.Title
+import com.example.watchly.data.repository.Repository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -16,7 +16,7 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
     private val _movies = MutableStateFlow<List<Title>>(emptyList())
     private val _tvshows = MutableStateFlow<List<Title>>(emptyList())
     private val _error = MutableStateFlow<String?>(null)
-    private val _loading = MutableStateFlow(false )
+    private val _loading = MutableStateFlow(false)
     val movies = _movies.asStateFlow()
     val tvshows = _tvshows.asStateFlow()
     val error = _error.asStateFlow()

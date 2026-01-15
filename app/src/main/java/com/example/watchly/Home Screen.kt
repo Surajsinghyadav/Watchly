@@ -1,7 +1,9 @@
 package com.example.watchly
 
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -15,18 +17,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.watchly.data.Title
 
 @Composable
 fun DiscoverHomeScreen(
-    viewModel: HomeViewModel
+    viewModel: HomeViewModel,
+    navController: NavHostController
 ) {
 
-    val discoverItems by viewModel.movies.collectAsState()
+    val movies by viewModel.movies.collectAsState()
+    val tvShows by viewModel.tvshows.collectAsState()
+    val isLoading by viewModel.loading.collectAsState()
+    val error by viewModel.error.collectAsState()
+
+    val discoverItems = movies + tvShows
 
     var selectedTab by remember { mutableStateOf(0) }
     val tabs = listOf("All","Movies", "TV Shows")
@@ -96,15 +106,35 @@ fun DiscoverHomeScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Movies List
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.fillMaxSize()
-        ) {
-            items(filteredItems) { movie ->
-                MovieCard(movie)
+
+        if (isLoading) {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(5) {
+                    HomeDataShimmer()
+                }
+            }
+        } else {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(filteredItems) { movie ->
+                    MovieCard(movie) { id ->
+                        navController.navigate("details/$id")
+                    }
+                }
+
             }
         }
+
+        error?.let {
+            Toast.makeText(LocalContext.current, it, Toast.LENGTH_SHORT).show()
+        }
+
+
     }
 }
 
@@ -131,12 +161,14 @@ fun TabButton(
 }
 
 @Composable
-fun MovieCard(title: Title) {
+fun MovieCard(title: Title, onClick: (Int) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White, RoundedCornerShape(12.dp))
-            .clickable {  }
+            .clickable {
+                onClick(title.id)
+            }
             .padding(12.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -149,11 +181,12 @@ fun MovieCard(title: Title) {
                 .background(Color.LightGray)
         ) {
 //            AsyncImage(
-//                model = movie.posterUrl,
-//                contentDescription = movie.title,
+//                model = "https://cdn.watchmode.com/posters/0398072_poster_w342.jpg",
+//                contentDescription = "Movie Poster",
 //                modifier = Modifier.fillMaxSize(),
 //                contentScale = ContentScale.Crop
 //            )
+
         }
 
         // Movie Details
@@ -174,7 +207,8 @@ fun MovieCard(title: Title) {
                 Spacer(modifier = Modifier.height(6.dp))
 
                 Row(
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
                         text = title.year.toString(),
@@ -189,7 +223,7 @@ fun MovieCard(title: Title) {
                     )
 
                     Text(
-                        text = title.type,
+                        text = title.type.replaceFirstChar { it.uppercase() },
                         fontSize = 14.sp,
                         color = Color.Gray
                     )

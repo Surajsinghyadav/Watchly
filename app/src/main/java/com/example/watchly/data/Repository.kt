@@ -1,21 +1,21 @@
 package com.example.watchly.data
 
+import io.reactivex.rxjava3.core.Single
+
 class Repository {
-    suspend fun getMovies() : DataModule{
-        val response = RetrofitInstance.api.getMovies()
-        if (response.isSuccessful && response.body() != null) {
-            return response.body()!!
-        } else {
-            throw Exception("Failed to fetch movies")
+
+    fun getHomeData(): Single<Pair<List<Title>, List<Title>>,>{
+        val moviesSingle = RetrofitInstance.api.getMovies()
+        val tvShowsSingle = RetrofitInstance.api.getTvShows()
+
+        return Single.zip(moviesSingle, tvShowsSingle){ movies, shows ->
+            Pair(movies.titles, shows.titles)
+
         }
     }
 
-    suspend fun  getTvShows() : DataModule{
-        val response = RetrofitInstance.api.getTvShows()
-        if (response.isSuccessful && response.body() != null){
-            return response.body()!!
-        } else {
-            throw Exception("Failed to fetch tv shows")
-        }
+    fun getTitleDetails(id: Int): Single<TitleDetailsResponse> {
+        return RetrofitInstance.api.getTitleDetails(id)
     }
+
 }

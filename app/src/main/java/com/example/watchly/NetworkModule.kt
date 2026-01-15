@@ -8,4 +8,6 @@ import org.koin.dsl.module
 val networkModule = module {
     single { Repository() }
     viewModel { HomeViewModel(get()) }
+    viewModel { DetailsViewModel(get()) }
+
 }

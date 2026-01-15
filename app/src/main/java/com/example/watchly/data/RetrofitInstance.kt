@@ -4,6 +4,7 @@ import com.example.watchly.data.RetrofitInstance.Client
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
@@ -29,6 +30,7 @@ object RetrofitInstance {
         Retrofit.Builder().baseUrl(BASE_URL)
             .client(Client)
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
             .create(WatchmodeApi::class.java)
 
